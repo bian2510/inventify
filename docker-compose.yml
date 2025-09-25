@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Servicio de la aplicación NestJS
+  api:
+    build: .
+    container_name: inventify-api
+    ports:
+      - "3000:3000"
+    environment:
+      # Estas variables de entorno deben ser leídas por tu aplicación
+      # para conectarse a la base de datos.
+      # El host 'db' es el nombre del servicio de la base de datos.
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: user
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: inventifydb
+    depends_on:
+      - db
+    networks:
+      - inventify-net
+
+  # Servicio de la base de datos PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: inventify-db
+    ports:
+      - "5432:5432"
+    environment:
+      # Estas variables son para inicializar la base de datos PostgreSQL
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: inventifydb
+    volumes:
+      # Este volumen persistirá los datos de PostgreSQL
+      # para que no se pierdan al detener el contenedor.
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - inventify-net
+
+# Definición de volúmenes y redes
+volumes:
+  postgres_data:
+
+networks:
+  inventify-net:
+    driver: bridge
