@@ -1,0 +1,142 @@
+ // This is your Prisma schema file,
+ // learn more about it in the docs: https://pris.ly/d/prisma-schema
+ 
+ // 1. Define the database provider and connection URL.
+ // The URL is loaded from an environment variable for better security.
+ datasource db {
+   provider = "postgresql" // Using PostgreSQL as defined in your docker-compose.yml
+   url      = env("DATABASE_URL")
+ }
+ 
+ // 2. Specify the Prisma Client generator.
+ generator client {
+   provider = "prisma-client-js"
+ }
+ // --- DATABASE MODELS ---
+ 
+ model Company {
+   id        String    @id @default(cuid())
+   name      String
+   createdAt DateTime  @default(now())
+   updatedAt DateTime  @updatedAt
+ 
+   // Relations
+   users     User[]
+   products  Product[]
+   packs     Pack[]
+   sales     Sale[]
+ }
+ 
+ model User {
+   id        String    @id @default(cuid())
+   email     String    @unique
+   password  String
+   role      Role      @default(USER) // Using an Enum is a good practice for roles
+   createdAt DateTime  @default(now())
+   updatedAt DateTime  @updatedAt
+ 
+   // Relation: A user belongs to one company
+   companyId String
+   company   Company   @relation(fields: [companyId], references: [id])
+ 
+   @@index([companyId])
+ }
+ 
+ model Product {
+   id        String    @id @default(cuid())
+   sku       String    @unique
+   name      String
+   stock     Int       @default(0)
+   createdAt DateTime  @default(now())
+   updatedAt DateTime  @updatedAt
+ 
+   // Relation: A product belongs to one company
+   companyId String
+   company   Company   @relation(fields: [companyId], references: [id])
+ 
+   // Relations
+   packProducts PackProduct[]
+   saleItems    SaleItem[]
+ 
+   @@index([companyId])
+ }
+ 
+ model Pack {
+   id        String    @id @default(cuid())
+   sku       String    @unique
+   name      String
+   createdAt DateTime  @default(now())
+   updatedAt DateTime  @updatedAt
+ 
+   // Relation: A pack belongs to one company
+   companyId String
+   company   Company   @relation(fields: [companyId], references: [id])
+ 
+   // Relation: A pack contains many products (through PackProduct)
+   products  PackProduct[]
+ 
+   @@index([companyId])
+ }
+ 
+ // Join table for the many-to-many relationship between Pack and Product
+ model PackProduct {
+   id       String @id @default(cuid())
+   quantity Int
+ 
+   // Relation to Pack
+   packId String
+   pack   Pack   @relation(fields: [packId], references: [id])
+ 
+   // Relation to Product
+   productId String
+   product   Product @relation(fields: [productId], references: [id])
+ 
+   @@index([packId])
+   @@index([productId])
+ }
+ 
+ model Sale {
+   id              String    @id @default(cuid())
+   saleDate        DateTime  @default(now())
+   totalAmount     Decimal
+   customerName    String
+   customerAddress String
+   paymentMethod   String
+   platform        String
+   createdAt       DateTime  @default(now())
+   updatedAt       DateTime  @updatedAt
+ 
+   // Relation: A sale belongs to one company
+   companyId String
+   company   Company   @relation(fields: [companyId], references: [id])
+ 
+   // Relation: A sale has many items
+   items     SaleItem[]
+ 
+   @@index([companyId])
+ }
+ 
+ model SaleItem {
+   id        String   @id @default(cuid())
+   quantity  Int
+   unitPrice Decimal
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+ 
+   // Relation: The item belongs to a sale
+   saleId String
+   sale   Sale   @relation(fields: [saleId], references: [id])
+ 
+   // Relation: The item is for a specific product
+   productId String
+   product   Product @relation(fields: [productId], references: [id])
+ 
+   @@index([saleId])
+   @@index([productId])
+ }
+ 
+ // Enum for user roles
+ enum Role {
+   ADMIN
+   USER
+ }
