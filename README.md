@@ -1,98 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Inventify API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+RESTful API for the "Inventify" inventory management system. Built with NestJS, TypeScript, and PostgreSQL, and fully dockerized for easy deployment and development.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ Features
 
-## Description
+- **Modern Framework**: Built with NestJS, a progressive Node.js framework for building efficient and scalable applications.
+- **Robust Database**: Uses PostgreSQL for data persistence.
+- **Fully Typed**: Written in TypeScript for safer and more maintainable code.
+- **Dockerized**: Complete setup with `Dockerfile` and `docker-compose.yml` for a consistent development and production environment.
+- **Efficient Package Manager**: Uses pnpm for fast and space-efficient dependency management.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 🚀 Getting Started
 
-```bash
-$ pnpm install
-```
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-## Compile and run the project
+### ✅ Prerequisites
 
-```bash
-# development
-$ pnpm run start
+Make sure you have the following installed on your system:
 
-# watch mode
-$ pnpm run start:dev
+- Node.js (v20 o superior)
+- pnpm
+- Docker
+- Docker Compose
 
-# production mode
-$ pnpm run start:prod
-```
+### 📦 Installation
 
-## Run tests
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/inventify.git
+    cd inventify
+    ```
 
-```bash
-# unit tests
-$ pnpm run test
+2.  **Install dependencies:**
+    ```bash
+    pnpm install
+    ```
 
-# e2e tests
-$ pnpm run test:e2e
+3.  **Environment Setup (for local development without Docker):**
 
-# test coverage
-$ pnpm run test:cov
-```
+    Create a `.env` file in the project root. You can use the `.env.example` file as a template:
+    ```bash
+    cp .env.example .env
+    ```
+    Adjust the variables inside `.env` if necessary for your local PostgreSQL setup.
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🐳 Running with Docker
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The easiest way to get the entire environment (API + Database) up and running is by using Docker Compose. The environment variables for the database connection are already configured in the `docker-compose.yml` file for container-to-container communication.
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+1.  **Build and start the containers:**
+    ```bash
+    docker-compose up --build
+    ```
+    - The `--build` flag will rebuild the API image if you've made changes to the code.
+    - To run in the background, add the `-d` flag: `docker-compose up --build -d`.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+2.  **Access the application:**
+    - The API will be available at `http://localhost:3000`.
+    - The API documentation (Swagger) will be available at `http://localhost:3000/api`.
 
-## Resources
+3.  **To stop the services:**
+    ```bash
+    docker-compose down
+    ```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 💻 Available Scripts
 
-## Support
+In the `package.json`, you will find several useful scripts:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Run in development mode (with hot-reloading):**
+  ```bash
+  pnpm run start:dev
+  ```
 
-## Stay in touch
+- **Construir la aplicación para producción:**
+  ```bash
+  pnpm run build
+  ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Ejecutar la aplicación en producción (después de construir):**
+  ```bash
+  pnpm run start:prod
+  ```
 
-## License
+- **Ejecutar tests unitarios:**
+  ```bash
+  pnpm run test
+  ```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Ejecutar tests e2e:**
+  ```bash
+  pnpm run test:e2e
+  ```
+
+- **Linting y formateo:**
+  ```bash
+  pnpm run lint
+  pnpm run format
+  ```
+
+---
+
+## 📄 Licencia
+
+Este proyecto no tiene una licencia especificada.

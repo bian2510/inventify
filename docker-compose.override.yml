@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      # Apunta a la etapa 'dev-stage' que contiene todas las dependencias (incluidas las de desarrollo)
+      target: dev-stage
+    environment:
+      # Habilita el modo de sondeo (polling) para que hot-reloading funcione en Docker.
+      - CHOKIDAR_USEPOLLING=true
+      # Le dice a pnpm que se está ejecutando en un entorno no interactivo (CI).
+      - CI=true
+    # Este comando asegura que las dependencias se instalen dentro del contenedor
+    # antes de iniciar el servidor de desarrollo. Esto soluciona los problemas
+    # de volúmenes con pnpm.
+    command: sh -c "pnpm install && pnpm run start:dev"
+    volumes:
+      # Sincroniza tu código local con el del contenedor en tiempo real.
+      # La sintaxis es: <ruta-local>:<ruta-en-contenedor>
+      - .:/app
+      # Esto es un truco importante: evita que tu 'node_modules' local
+      # sobreescriba el que se instaló dentro del contenedor.
+      # Así, mantenemos las dependencias del contenedor aisladas.
+      - /app/node_modules
