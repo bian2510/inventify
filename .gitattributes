@@ -1,0 +1,3 @@
+# Normaliza todos los archivos de texto al formato de final de línea de Linux (LF).
+# Esto previene problemas de scripts y archivos al correr dentro de contenedores Docker.
+* text=auto eol=lf
